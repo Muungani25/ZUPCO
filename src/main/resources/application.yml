@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: deport-management
+  datasource:
+    url: jdbc:mysql://localhost:3306/deport_management_dev
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 'Tafadzwa@25'
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9001/realms/DepotManagement
+          jwk-set-uri: ${spring.security.oauth2.resourceserver.jwt.issuer-uri}/protocol/openid-connect/certs
+
+keycloak:
+  client-id: backend
+  client-secret: Pe49WH8jzhnNavHQqNhcOK8iPyqumWc0
+  grant_type: password
+  token-uri: http://localhost:9001/realms/DepotManagement/protocol/openid-connect/token
+
+jwt:
+  auth:
+    converter:
+      resource-id: backend
+      principle-attribute: preferred_username
+server:
+  port: 8022
