@@ -24,9 +24,10 @@ public class LocationServiceImpl implements LocationService{
     }
 
     @Override
-    public ResponseEntity<Response> getSpeed() {
-        return ResponseEntity.ok(Response.builder()
-                        .message(locationRepository.findFirstByOrderByIdDesc().get().getSpeed())
+    public ResponseEntity<GpsRequest> getSpeed() {
+        return ResponseEntity.ok(GpsRequest.builder()
+                .speed(locationRepository.findFirstByOrderByIdDesc().get().getSpeed())
+                        .location(locationRepository.findFirstByOrderByIdDesc().get().getLocation())
                 .build());
     }
 }

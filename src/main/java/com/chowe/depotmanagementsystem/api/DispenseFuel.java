@@ -1,30 +1,23 @@
 package com.chowe.depotmanagementsystem.api;
 
+import com.chowe.depotmanagementsystem.api.dto.Response;
+import com.chowe.depotmanagementsystem.service.BusService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
+@RequiredArgsConstructor
 public class DispenseFuel {
 
-    private final String esp32Url = "http://192.168.137.196"; // Replace with your ESP32's IP address
+    private final BusService busService;
 
-    @GetMapping("/relay")
-    public String controlRelay(@RequestParam String action) {
-        if (action.equalsIgnoreCase("on")) {
-            sendHttpRequest(esp32Url + "/on");
-            return "Relay turned ON";
-        } else if (action.equalsIgnoreCase("off")) {
-            sendHttpRequest(esp32Url + "/off");
-            return "Relay turned OFF";
-        } else {
-            return "Invalid action";
-        }
-    }
+    @GetMapping("/dispense_fuel/{fleetNumber}")
+    public String controlRelay(@PathVariable String fleetNumber){
 
-    private void sendHttpRequest(String urlString) {
-        RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getForObject(urlString, String.class);
+            return busService.dispenseFuel(fleetNumber).getMessage();
+
+
     }
-}
+    }

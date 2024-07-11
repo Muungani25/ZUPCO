@@ -20,5 +20,6 @@ public class Driver {
     @Column(unique = true)
     private String driverId;
     private boolean isAssigned;
+    private String phoneNumber;
     private boolean isActive;
 }

@@ -15,4 +15,6 @@ public class Conductor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String conductorName;
+    private String phoneNumber;
+    private boolean isAssigned;
 }

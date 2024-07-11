@@ -30,3 +30,11 @@ jwt:
       principle-attribute: preferred_username
 server:
   port: 8022
+
+
+clickatel:
+  http:
+    api:
+      key: HQ9CGlaYSbGfNcY4OSyTAg==
+    send:
+      url: 'https://platform.clickatell.com/messages/http/send?apiKey={apiKey}&to={to}&content={content}'

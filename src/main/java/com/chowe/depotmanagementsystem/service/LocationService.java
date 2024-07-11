@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface LocationService {
 
     void saveLocation(GpsRequest request);
-    ResponseEntity<Response> getSpeed();
+    ResponseEntity<GpsRequest> getSpeed();
 }

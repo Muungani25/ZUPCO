@@ -1,11 +1,9 @@
 package com.chowe.depotmanagementsystem.service;
 
-import com.chowe.depotmanagementsystem.api.dto.BusRequest;
-import com.chowe.depotmanagementsystem.api.dto.FuelLevel;
-import com.chowe.depotmanagementsystem.api.dto.FuelSummary;
-import com.chowe.depotmanagementsystem.api.dto.Response;
+import com.chowe.depotmanagementsystem.api.dto.*;
 import com.chowe.depotmanagementsystem.domain.Bus;
 import com.chowe.depotmanagementsystem.domain.Fuel;
+import com.chowe.depotmanagementsystem.espclient.EspClient;
 import com.chowe.depotmanagementsystem.repository.BusRepository;
 import com.chowe.depotmanagementsystem.repository.DriverRepository;
 import com.chowe.depotmanagementsystem.repository.FuelRepository;
@@ -16,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,6 +26,7 @@ public class BuServiceImpl implements BusService{
     private final DriverRepository driverRepository;
     private final BusRepository busRepository;
     private final FuelRepository fuelRepository;
+    private final EspClient espClient;
     @Override
     public ResponseEntity<Response> addNewBus(BusRequest request) {
 
@@ -94,6 +94,19 @@ public class BuServiceImpl implements BusService{
         return buses.stream()
                 .map(this::buildFuelSummary)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Response dispenseFuel(String fleetNumber) {
+        var bus = busRepository.findByFleetNumber(fleetNumber)
+                .orElseThrow(()-> new ResourceNotFoundException("No such bus is recorded in the system"));
+        var remainingFuel = bus.getRemainingFuel()== null ? BigDecimal.ZERO : bus.getRemainingFuel();
+
+        var fuelToDisburse = bus.getAllocatedFuel().subtract(remainingFuel).abs();
+        espClient.sendDispenseFuelSignalToEsp(fuelToDisburse);
+        return Response.builder()
+                .message("Fuel Disbursement process initiated")
+                .build();
     }
 
     @Override

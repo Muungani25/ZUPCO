@@ -8,6 +8,7 @@ import com.chowe.depotmanagementsystem.repository.BusRepository;
 import com.chowe.depotmanagementsystem.repository.DriverRepository;
 import com.chowe.depotmanagementsystem.service.exceptions.ResourceNotFoundException;
 import com.chowe.depotmanagementsystem.service.util.DriverIdGenerator;
+import com.chowe.depotmanagementsystem.service.util.MobileNumberFormatter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ public class DriverServiceImpl implements DriverService{
         driverRepository.save(Driver.builder()
                 .lastName(request.getLastName())
                 .firstName(request.getFirstName())
+                .phoneNumber("0778873016")
                 .driverId(DriverIdGenerator.generateDriverId())
                         .isAssigned(false)
                         .isActive(true)

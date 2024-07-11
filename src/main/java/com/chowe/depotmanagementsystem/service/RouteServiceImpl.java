@@ -6,10 +6,8 @@ import com.chowe.depotmanagementsystem.api.dto.Response;
 import com.chowe.depotmanagementsystem.api.dto.RouteRequest;
 import com.chowe.depotmanagementsystem.domain.Dispatch;
 import com.chowe.depotmanagementsystem.domain.Route;
-import com.chowe.depotmanagementsystem.repository.BusRepository;
-import com.chowe.depotmanagementsystem.repository.DispatchRepository;
-import com.chowe.depotmanagementsystem.repository.DriverRepository;
-import com.chowe.depotmanagementsystem.repository.RouteRepository;
+import com.chowe.depotmanagementsystem.repository.*;
+import com.chowe.depotmanagementsystem.service.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +24,7 @@ public class RouteServiceImpl implements RouteService{
     private final DriverRepository driverRepository;
     private final BusRepository busRepository;
     private final DispatchRepository dispatchRepository;
+    private final ConductorRepository conductorRepository;
 
     @Override
     public ResponseEntity<Response> addNewRoutes(RouteRequest request) {
@@ -42,6 +41,8 @@ public class RouteServiceImpl implements RouteService{
 
     @Override
     public ResponseEntity<Response> createDispatch(DispatchRequest request) {
+
+
 
         var route = routeRepository.findById(request.getRouteId());
         var bus = busRepository.findBusByFleetNumber(request.getFleetNumber());
